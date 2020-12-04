@@ -3,11 +3,31 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors')
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
 const app = express();
+
+//Debug CORS Policy
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+       "Access-Control-Allow-Headers",
+       "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.setHeader(
+       "Access-Control-Allow-Methods",
+       "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  next();
+});
+
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}))
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -25,10 +45,12 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
+
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+  console.log('before Error')
   // render the error page
   res.status(err.status || 500);
   res.render('error');

@@ -7,6 +7,70 @@
 var app = require('../app');
 var debug = require('debug')('filestructureblog:server');
 var http = require('http');
+var dotenv = require('dotenv')
+dotenv.config()
+
+
+// const data = require('../routes/users.js')
+// console.log(data.data())
+
+// var models = require('../models')
+
+const { Client } = require("pg")
+
+const client = new Client({
+  user: process.env.NAME,
+  host: process.env.HOST,
+  database: process.env.DATABASE,
+  password: process.env.PASSWORD,
+  port: 5432,
+})
+
+client.connect(err => {
+  if (err) {
+    console.error('connection error', err.stack)
+  } else {
+    console.log('connected')
+  }
+})
+
+  // client.query('CREATE TABLE Test(TEST_id INT, test VARCHAR)', (err, res) => {
+  //   if (err) {
+  //     console.log(err)
+  //   }
+  //   console.log(res)
+  //   client.end()
+  // })
+
+  //  client.query('DROP TABLE Test', (err, res) => {
+  //   if (err) {
+  //     console.log(err)
+  //   }
+  //   console.log(res)
+  //   client.end()
+  // })
+
+
+  const eraseDatabaseOnSync = true;
+ 
+  // sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
+  //   server.listen(port, () => {
+  //     console.log(`Listening on port ${process.env.PORT}`)
+  //   });
+  // });
+
+
+/**
+ * Get data from route users
+ */
+
+
+// module.exports = setData()
+//  function setData(data){
+//   console.log(data)
+//  }
+
+
 
 /**
  * Get port from environment and store in Express.
@@ -25,7 +89,7 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(port)
 server.on('error', onError);
 server.on('listening', onListening);
 
